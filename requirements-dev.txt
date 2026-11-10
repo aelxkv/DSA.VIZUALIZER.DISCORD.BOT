@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest>=8
+python-dotenv>=1
+ruff>=0.6

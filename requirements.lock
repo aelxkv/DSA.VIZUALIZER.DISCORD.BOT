@@ -1,0 +1,4 @@
+# Exact versions the test suite passed with. Use if you want a reproducible install:
+#   pip install -r requirements.lock      (needs Python 3.11+ because of Pillow 13)
+discord.py==2.7.1
+Pillow==13.0.0

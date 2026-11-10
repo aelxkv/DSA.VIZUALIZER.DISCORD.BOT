@@ -1,0 +1,4 @@
+# Runtime dependencies (ranges so pip can pick versions that match your Python).
+# Tested with: Python 3.12, discord.py 2.7.1, Pillow 13.0.0 (see requirements.lock).
+discord.py>=2.4,<3
+Pillow>=10.1,<14
