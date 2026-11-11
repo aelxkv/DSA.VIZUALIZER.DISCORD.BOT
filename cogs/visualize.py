@@ -16,7 +16,7 @@ import algos  # noqa: F401  (registers every algorithm)
 import config
 import service
 from bot import GENERIC_ERROR, DsaBot
-from cogs._util import resolve_channel
+from cogs._util import resolve_channel, with_help_hint
 from core import registry
 from core.errors import BotError, RenderError, UserInputError
 from core.logtext import build_log, closing_message, info_message, thread_title
@@ -80,8 +80,12 @@ class Visualize(commands.Cog):
             log.warning("run failed algo=%s: %s", spec.algo, exc)
             # Only our own user-safe messages are shown; internal ones stay in the log.
             text = str(exc) if isinstance(exc, (UserInputError, RenderError)) else GENERIC_ERROR
-            await interaction.edit_original_response(content=f"❌ {text}")
+            self.bot.stats.record_run(spec.algo, ok=False)
+            await interaction.edit_original_response(
+                content=f"❌ {with_help_hint(text, 'visualize')}"
+            )
             return
+        self.bot.stats.record_run(spec.algo, animation.elapsed_ms)
         run = animation.run
 
         # 3. First message holds the machine-readable run line; thread hangs off it.

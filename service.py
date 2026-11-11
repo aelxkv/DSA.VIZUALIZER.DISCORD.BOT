@@ -18,21 +18,23 @@ log = logging.getLogger(__name__)
 class Animation:
     run: Run
     gif: GifResult
+    elapsed_ms: float = 0.0
 
 
 def make_animation(spec: RunSpec) -> Animation:
     started = time.perf_counter()
     run = execute(spec)
     gif = render_gif(run)
+    elapsed_ms = (time.perf_counter() - started) * 1000
     log.info(
         "animation algo=%s steps=%d frames=%d bytes=%d ms=%.0f",
         spec.algo,
         len(run.steps),
         gif.frames,
         len(gif.data),
-        (time.perf_counter() - started) * 1000,
+        elapsed_ms,
     )
-    return Animation(run=run, gif=gif)
+    return Animation(run=run, gif=gif, elapsed_ms=elapsed_ms)
 
 
 def make_step_image(spec: RunSpec, n: int) -> tuple[bytes, int]:

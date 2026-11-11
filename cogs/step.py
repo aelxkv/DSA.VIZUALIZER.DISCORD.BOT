@@ -13,7 +13,7 @@ import algos  # noqa: F401
 import config
 import service
 from bot import GENERIC_ERROR, DsaBot
-from cogs._util import resolve_channel
+from cogs._util import resolve_channel, with_help_hint
 from core.errors import BotError, RenderError, UserInputError
 from core.spec import parse_line
 
@@ -52,7 +52,7 @@ class Step(commands.Cog):
         except BotError as exc:
             log.warning("step failed algo=%s n=%d: %s", spec.algo, n, exc)
             text = str(exc) if isinstance(exc, (UserInputError, RenderError)) else GENERIC_ERROR
-            await interaction.edit_original_response(content=f"❌ {text}")
+            await interaction.edit_original_response(content=f"❌ {with_help_hint(text, 'step')}")
             return
         await interaction.edit_original_response(
             content=f"Step {n} of {total}",

@@ -29,6 +29,11 @@ class RenderGate:
         self._pending = 0  # running + queued
 
     @property
+    def pending(self) -> int:
+        """Jobs running or queued right now."""
+        return self._pending
+
+    @property
     def busy(self) -> bool:
         return self._pending >= 1 + self._max_waiting
 

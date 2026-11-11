@@ -22,3 +22,11 @@ async def resolve_channel(
         return found
     except discord.HTTPException:
         return None
+
+
+def with_help_hint(text: str, command: str | None = None) -> str:
+    """Append the standard pointer to /help (once) to a user-facing error."""
+    if "Need help?" in text:
+        return text
+    target = f" command:{command}" if command else ""
+    return f"{text}\nNeed help? `/help{target}`"

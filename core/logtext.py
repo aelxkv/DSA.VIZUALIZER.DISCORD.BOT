@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import config
+from core.complexity import complexity_line
 from core.runner import Run
 from core.steps import BarStep, CellStep, GraphSpec, GraphStep, Stats, Step
 
@@ -109,6 +110,7 @@ def info_message(run: Run, requester: str, notes: list[str]) -> str:
 def closing_message(run: Run, *, reduced: bool) -> str:
     lines = [
         f"✅ {summary_text(run)}",
+        complexity_line(run.info.key),
         LEGENDS[run.info.kind],
         f"Use `/step n:<1-{len(run.steps)}>` in this thread to see any step as an image.",
     ]

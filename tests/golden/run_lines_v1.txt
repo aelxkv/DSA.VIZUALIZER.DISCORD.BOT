@@ -1,0 +1,14 @@
+`v=1 | algo=bfs | data=1-2,1-5,2-3,2-6,3-4,4-5,4-6,5-6 | target=- | start=1`
+`v=1 | algo=dfs | data=1-2,1-3,1-4,1-5,1-6,2-4,4-5 | target=- | start=1`
+`v=1 | algo=linear | data=2,88,63,87,41,27,51,33,45,46 | target=74 | start=-`
+`v=1 | algo=binary | data=10,12,37,38,44,59,69,72,82,93 | target=93 | start=-`
+`v=1 | algo=bubble | data=40,4,91,48,47,60,55,12,52,75 | target=- | start=-`
+`v=1 | algo=selection | data=71,64,15,55,65,97,77,63,51,68 | target=- | start=-`
+`v=1 | algo=insertion | data=34,54,73,62,66,67,4,74,29,99 | target=- | start=-`
+`v=1 | algo=quick | data=17,7,91,67,86,14,92,80,55,61 | target=- | start=-`
+`v=1 | algo=heap | data=19,62,30,16,81,90,59,87,61,92 | target=- | start=-`
+`v=1 | algo=merge | data=70,33,72,52,86,40,71,83,65,90 | target=- | start=-`
+`v=1 | algo=radix | data=62,52,56,26,38,35,2,5,20,84 | target=- | start=-`
+`v=1 | algo=preorder | data=77,59,67,63,47,26,34 | target=- | start=-`
+`v=1 | algo=inorder | data=89,63,60,66,99,64,56 | target=- | start=-`
+`v=1 | algo=postorder | data=72,85,5,38,41,59,13 | target=- | start=-`

@@ -17,6 +17,7 @@ from core.gate import RenderGate
 from core.logtext import info_message
 from core.runner import execute
 from core.spec import RunSpec
+from core.stats import StatsStore
 
 
 def run_async(coro):
@@ -25,7 +26,9 @@ def run_async(coro):
 
 def make_bot():
     return SimpleNamespace(
-        gate=RenderGate(config.MAX_WAITING, config.RENDER_TIMEOUT_S), user=SimpleNamespace(id=42)
+        gate=RenderGate(config.MAX_WAITING, config.RENDER_TIMEOUT_S),
+        user=SimpleNamespace(id=42),
+        stats=StatsStore(),
     )
 
 
@@ -45,11 +48,11 @@ def choice(key):
 # ---- command tree ------------------------------------------------------------
 def test_commands_load_with_expected_options():
     async def main():
-        bot = DsaBot()
-        for ext in ("cogs.visualize", "cogs.step"):
+        bot = DsaBot(stats=StatsStore())
+        for ext in ("cogs.visualize", "cogs.step", "cogs.help", "cogs.info"):
             await bot.load_extension(ext)
         commands = {c.name: c for c in bot.tree.get_commands()}
-        assert set(commands) == {"visualize", "step"}
+        assert set(commands) == {"visualize", "step", "help", "about", "stats"}
         assert len(commands["visualize"].parameters[0].choices) == 14
         names = [p.name for p in commands["visualize"].parameters]
         assert names == ["algo", "data", "size", "target", "start"]
@@ -59,7 +62,7 @@ def test_commands_load_with_expected_options():
 
 
 def test_bot_uses_minimal_intents():
-    intents = DsaBot().intents
+    intents = DsaBot(stats=StatsStore()).intents
     assert intents.guilds and not intents.message_content
     assert not intents.members and not intents.presences
 
@@ -211,7 +214,8 @@ def test_error_handler_messages():
     wrapped = SimpleNamespace(original=UserInputError("Bad data"))
     interaction = _error_interaction()
     run_async(on_app_command_error(interaction, wrapped))
-    assert interaction.response.send_message.await_args.args[0] == "Bad data"
+    text = interaction.response.send_message.await_args.args[0]
+    assert text.startswith("Bad data") and "/help command:visualize" in text
 
     interaction = _error_interaction(done=True)  # already answered -> follow-up
     run_async(on_app_command_error(interaction, SimpleNamespace(original=RuntimeError("secret"))))
